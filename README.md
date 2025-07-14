@@ -40,3 +40,49 @@ npm run build
 ```
 yarn build
 ```
+## Ключевые типы данных
+
+```
+type Category = 'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил'; // категории продукта
+
+// интерфейс отдельного продукта
+interface IProductItem {
+  title: string; // название
+  price: number; // цена 
+  category: Category; // категория продукта 
+  image: string; // ссылка на изображение 
+  id: string; // идентификатор продукта
+  description?: string; // описание (показывается только в при превью)
+}
+
+type BasketItem = Pick<IProductItem, 'id' | 'title' | 'price'>; // айтем в корзине, понадобится только название, цена и айди
+
+// интерфейс формы заказа
+interface IOrderForm {
+  payment: 'cash' | 'card'; // тип выбора оплаты
+  phone: string; // телефон
+  address: string; // адрес
+  email: string; // почта
+}
+
+// интерфейс всего заказа
+interface IOrder extends IOrderForm {
+  items: string[]; // список товаров, будем сохранять только id
+}
+
+// интерфейс ответа сервера на заказ
+interface IOrderResult {
+  id: string; // айди
+  total: number; // стоимость покупки
+}
+
+// интерфейс состояния приложения
+interface IAppState {
+  catalog: IProductItem[]; // список товаров
+  order: IOrder | null; // заказ или есть или нету
+  preview: boolean; // показывается ли модальное окно
+}
+
+type FormError = Partial<Record<keyof IOrderForm, string>> // для валидации ошибок формы, берем поля из заказа
+
+```
