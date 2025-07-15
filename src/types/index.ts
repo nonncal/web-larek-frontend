@@ -6,7 +6,7 @@ interface IProductItem {
   category: Category;
   image: string;
   id: string;
-  description?: string;
+  description: string;
 }
 
 type BasketItem = Pick<IProductItem, 'id' | 'title' | 'price'>;

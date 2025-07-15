@@ -40,7 +40,8 @@ npm run build
 ```
 yarn build
 ```
-## Ключевые типы данных
+## Описание данных
+### Ключевые типы данных
 
 ```
 type Category = 'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил'; // категории продукта
@@ -52,7 +53,7 @@ interface IProductItem {
   category: Category; // категория продукта 
   image: string; // ссылка на изображение 
   id: string; // идентификатор продукта
-  description?: string; // описание (показывается только в при превью)
+  description?: string; // описание 
 }
 
 type BasketItem = Pick<IProductItem, 'id' | 'title' | 'price'>; // айтем в корзине, понадобится только название, цена и айди
@@ -86,3 +87,25 @@ interface IAppState {
 type FormError = Partial<Record<keyof IOrderForm, string>> // для валидации ошибок формы, берем поля из заказа
 
 ```
+### Единый компонент модели данных, содержит состояние приложения и продукта. 
+
+- src/components/AppData.ts
+
+1. Класс `ProductItem` 
+
+Содержит информацию отдельного продукта и управляет его состоянием. 
+Метод `isAvailable` проверяет доступен ли продукт для покупки, `addToBasket` позволяет добавить продукт в корзину, а `deleteFromBasket` удалить из корзины.
+
+2. Класс `AppState` 
+
+Содержит информацию о состоянии приложения. 
+Позволяет установить и получить информацию о каталоге продуктов `setCatalog` и `getCatalog`, очистить корзину `clearBasket`, 
+получить итоговую сумму в корзине `getTotal`, валидирует форму заказа `validateOrder` и `setOrderField`, устанавливает превью setPreview,
+фильтрует корзину с товарами `toggleOrderedProducts`. 
+
+
+
+
+### Компонент работы с API
+
+- src/components/MarketApi.ts
