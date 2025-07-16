@@ -239,7 +239,7 @@ formErrors: FormError = {}; // объект с ошибками валидаци
 
 Имеет поля:
 ```
-    protected _button: HTMLButtonElement;
+    protected _button: HTMLButtonElement; // кнопка действия
 ```
 
 В конструкторе принимает контейнер и функцию с действиями по клику.
@@ -276,10 +276,10 @@ formErrors: FormError = {}; // объект с ошибками валидаци
 
 Имеет поля:
 ```
-    protected _counter: HTMLElement;
-    protected _basket: HTMLElement;
-    protected _catalog: HTMLElement;
-    protected _wrapper: HTMLElement;
+    protected _counter: HTMLElement; // счетчик товаров в корзине 
+    protected _basket: HTMLElement; // корзина 
+    protected _catalog: HTMLElement; // каталог товаров 
+    protected _wrapper: HTMLElement; // обертка страницы для блокировки при открытом модальном окне
 ```
 
 В конструкторе принимает контейнер и объект брокера событий `container: HTMLElement,protected events: EventEmitter`
@@ -299,12 +299,12 @@ formErrors: FormError = {}; // объект с ошибками валидаци
 
 Имеет поля:
 ```
-    protected _title: HTMLElement;
-    protected _image?: HTMLElement;
-    protected _description?: HTMLElement;
-    protected _button?: HTMLElement;
-    protected _category?: HTMLElement;
-    protected _price: HTMLElement;
+    protected _title: HTMLElement; // название товара 
+    protected _image?: HTMLElement; // картинка товара 
+    protected _description?: HTMLElement; // описание товара 
+    protected _button?: HTMLElement; // кнопка на карточке товара 
+    protected _category?: HTMLElement; // категория товара 
+    protected _price: HTMLElement; // цена товара 
 ```
 
 В конструкторе принимает контейнер, защищенное свойство названия блока, в котором будет отображаться карточка и
