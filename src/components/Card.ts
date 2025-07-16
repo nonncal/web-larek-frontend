@@ -6,3 +6,8 @@ interface ICard {
   category?: string;
 }
 
+interface ICardActions {
+  onClick: (event: MouseEvent) => void;
+}
+
+
