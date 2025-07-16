@@ -2,7 +2,7 @@ type Category = 'софт-скил' | 'другое' | 'дополнительн
 
 interface IProductItem {
   title: string;
-  price: number;
+  price: number | null;
   category: Category;
   image: string;
   id: string;
@@ -12,5 +12,5 @@ interface IProductItem {
 interface IAppState {
   catalog: IProductItem[];
   order: IOrder | null;
-  preview: boolean;
+  preview: string | null;
 }
