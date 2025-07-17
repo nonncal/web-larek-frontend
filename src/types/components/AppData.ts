@@ -1,6 +1,8 @@
-type Category = 'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил';
+import { IOrder } from "./Order";
 
-interface IProductItem {
+export type Category = 'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил';
+
+export interface IProductItem {
   title: string;
   price: number | null;
   category: Category;
@@ -9,7 +11,7 @@ interface IProductItem {
   description: string;
 }
 
-interface IAppState {
+export interface IAppState {
   catalog: IProductItem[];
   order: IOrder | null;
   preview: string | null;

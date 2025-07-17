@@ -1,15 +1,15 @@
-interface IOrderForm {
-  payment: 'cash' | 'card';
+export interface IOrderForm {
+  payment: string;
   phone: string;
   address: string;
   email: string;
 }
 
-interface IOrder extends IOrderForm {
+export interface IOrder extends IOrderForm {
   items: string[];
 }
 
-interface IOrderResult {
+export interface IOrderResult {
   id: string;
   total: number;
 }
