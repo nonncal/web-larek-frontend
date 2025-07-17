@@ -2,10 +2,11 @@ import './scss/styles.scss';
 
 import { AppData } from './components/AppData';
 import { EventEmitter } from './components/base/events';
+import { Page } from './components/Page';
 
-let events = new EventEmitter();
+const events = new EventEmitter();
 
-let app = new AppData({}, events);
+const app = new AppData({}, events);
 
 app.setCatalog([
   {
@@ -78,3 +79,7 @@ console.log(app.getTotal());
 app.clearBasket();
 
 console.log(app.basket);
+
+const page = new Page(document.body, events);
+
+page.counter = 23;
