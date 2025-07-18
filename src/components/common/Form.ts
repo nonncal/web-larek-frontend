@@ -9,7 +9,7 @@ export class Form<T> extends Component {
   constructor(protected container: HTMLFormElement,protected events: IEvents) {
     super(container);
 
-    this._button = ensureElement<HTMLButtonElement>('.button');
+    this._button = ensureElement<HTMLButtonElement>('.modal__actions');
     this._errors = ensureElement<HTMLElement>('.form__errors');
     
     this.container.addEventListener('input', (e) => {
