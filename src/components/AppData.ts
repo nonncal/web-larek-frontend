@@ -7,7 +7,7 @@ import { EventEmitter, IEvents } from "./base/events";
 export class AppData implements IAppState {
   basket: string[] = [];
   order: IOrder  = {
-  payment: 'card',
+  payment: '',
   phone: '',
   address: '',
   email: '',
@@ -83,6 +83,10 @@ export class AppData implements IAppState {
     if (!this.order.phone) {
       errors.phone = 'Необходимо указать телефон';
     }
+
+    if (!this.order.payment) {
+      errors.phone = 'Необходимо указать способ оплаты';
+    } 
 
     this.formErrors = errors;
     this.events.emit('formErrors:change', this.formErrors);

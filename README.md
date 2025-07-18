@@ -197,11 +197,11 @@ formErrors: FormError = {}; // объект с ошибками валидаци
 
 Имеет поля:
 ```
-    protected _submit: HTMLButtonElement; // кнопка подтверждения 
+    protected _button: HTMLButtonElement; // кнопка подтверждения 
     protected _errors: HTMLElement; // элемент для вывода ошибок 
 ```
 
-В конструкторе принимает контейнер и объект брокера событий `container: HTMLElement,protected events: EventEmitter`
+В конструкторе принимает контейнер и объект брокера событий `protected container: HTMLFormElement,protected events: EventEmitter`
 
 Добавляет на форму слушатели, выводит ошибки, переопределяет метод `render` родительского классса `Component`.
 Защищенный метод `onInputChange, принимает ключи и устанавливает значения` вызывает событие с названием поля при вводе в форму. 
