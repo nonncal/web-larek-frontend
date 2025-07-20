@@ -50,15 +50,10 @@ appData.addToBasket({
 events.on('items:changed', () => {
   page.catalog = appData.catalog.map((item) => {
     const card = new Card(cloneTemplate(cardCatalogTemplate), {onClick: () => events.emit('card:select', item)});
-    // card.id = item.id;
-    // card.title = item.title;
-    // card.price = item.price === null ? 'Бесценно' : `${item.price} синапсов`;
-    // card.image = item.image;
-    // card.category = item.category;
     return card.render(item);
   });
 
-  page.counter = appData.getBasketProducts();
+  page.counter = appData.getBasketProducts().length;
 })
 
 events.on('card:select', (item: IProductItem) => {
@@ -71,10 +66,23 @@ events.on('preview:changed', (item: IProductItem) => { // @todo onClick
 })
 
 events.on('basket:open', () => {
+  basket.items = appData.getBasketProducts().map(item => {
+    const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {appData.deleteFromBasket(item),  page.counter = appData.getBasketProducts().length}});
+    return card.render(item);
+  });
+  basket.total = appData.getTotal();
   modal.render({
    content:  basket.render()
-  }) 
+  });
 });
+
+events.on('basket:changed', () => {
+  basket.items = appData.getBasketProducts().map(item => {
+    const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {appData.deleteFromBasket(item),  page.counter = appData.getBasketProducts().length}});
+    return card.render(item);
+  });
+  basket.total = appData.getTotal();
+})
 
 // events.on('order:submit', () => {
 //   api.orderProducts(appData.order)

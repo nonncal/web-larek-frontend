@@ -5,7 +5,7 @@ import { EventEmitter, IEvents } from "./base/events";
 
 
 export class AppData implements IAppState {
-  basket: string[] = [];
+  basket: IProductItem[] = [];
   order: IOrder  = {
   payment: '',
   phone: '',
@@ -20,8 +20,8 @@ export class AppData implements IAppState {
   constructor(data: Partial<IAppState>, protected events: IEvents) {}
 
   filterOrderdProducts(id: string) {
-    this.order.items = Array.from(new Set([...this.order.items, id]));
-    this.basket = this.order.items;
+    this.basket = Array.from(new Set([...this.basket]));
+    this.order.items = this.basket.map(item => item.id);
   }
 
   setCatalog(items: IProductItem[]) {
@@ -41,14 +41,14 @@ export class AppData implements IAppState {
   }
 
   addToBasket(item: IProductItem) {
-    this.basket.push(item.id);
-    this.order.items = this.basket;
+    this.basket.push(item);
+    this.order.items = this.basket.map(item => item.id);
     this.events.emit('basket:changed', this.basket);
   }
 
   deleteFromBasket(item: IProductItem) {
-    this.basket = this.basket.filter(id => id !== item.id);
-    this.order.items = this.basket;
+    this.basket = this.basket.filter(({id}) => id !== item.id);
+    this.order.items = this.basket.map(item => item.id);
     this.events.emit('basket:changed', this.basket);
   }
 
@@ -59,11 +59,11 @@ export class AppData implements IAppState {
   }
 
   getTotal() {
-    return this.order.items.reduce((acc, item) => acc + this.catalog.find(product => product.id === item).price, 0);
+    return this.basket.reduce((acc, item) => acc + item.price, 0);
   }
 
   getBasketProducts() {
-    return this.basket.length;
+    return this.basket;
   }
 
   setOrderField(field: keyof IOrderForm, value: string) {
