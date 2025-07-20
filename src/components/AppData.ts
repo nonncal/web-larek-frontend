@@ -19,13 +19,14 @@ export class AppData implements IAppState {
 
   constructor(data: Partial<IAppState>, protected events: IEvents) {}
 
-  toggleOrderdProducts(id: string) {
+  filterOrderdProducts(id: string) {
     this.order.items = Array.from(new Set([...this.order.items, id]));
+    this.basket = this.order.items;
   }
 
   setCatalog(items: IProductItem[]) {
     this.catalog = items;
-    this.events.emit('catalog:changed', {catalog: this.catalog});
+    this.events.emit('items:changed', {catalog: this.catalog});
   }
 
   // @todo нужен ли getCatalog?
@@ -59,6 +60,10 @@ export class AppData implements IAppState {
 
   getTotal() {
     return this.order.items.reduce((acc, item) => acc + this.catalog.find(product => product.id === item).price, 0);
+  }
+
+  getBasketProducts() {
+    return this.basket.length;
   }
 
   setOrderField(field: keyof IOrderForm, value: string) {

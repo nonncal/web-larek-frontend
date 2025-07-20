@@ -10,9 +10,9 @@ export class Basket extends Component {
   constructor(container: HTMLElement,protected events: IEvents) {
     super(container);
 
-    this._list = ensureElement<HTMLElement>('.basket__list');
-    this._total = ensureElement<HTMLElement>('.basket__price');
-    this._button = ensureElement<HTMLButtonElement>('.basket__button');
+    this._list = ensureElement<HTMLElement>('.basket__list', container);
+    this._total = ensureElement<HTMLElement>('.basket__price', container);
+    this._button = ensureElement<HTMLButtonElement>('.basket__button', container);
 
     this._button.addEventListener('click', () => {
       this.events.emit('order:open');
@@ -22,7 +22,7 @@ export class Basket extends Component {
   }
 
   set items(items: HTMLElement[]) {
-    if(items) {
+    if(items.length) {
       this._list.replaceChildren(...items);
     } else {
       this._list.replaceChildren(createElement<HTMLParagraphElement>('p', {textContent: 'Корзина пуста'}));

@@ -2,7 +2,7 @@ import { IOrderForm } from "../types/components/Order";
 import { IEvents } from "./base/events";
 import { Form } from "./common/Form";
 
-export class paymentOrder extends Form<IOrderForm> {
+export class PaymentOrder extends Form<IOrderForm> {
   constructor (conatiner: HTMLFormElement,protected events: IEvents) {
     super(conatiner, events);
   }
@@ -20,7 +20,7 @@ export class paymentOrder extends Form<IOrderForm> {
   }
 }
 
-export class contactsOrder extends Form<IOrderForm> {
+export class ContactsOrder extends Form<IOrderForm> {
    constructor (conatiner: HTMLFormElement,protected events: IEvents) {
     super(conatiner, events);
   }

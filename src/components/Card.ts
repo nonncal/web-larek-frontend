@@ -13,15 +13,15 @@ export class Card extends Component {
   protected _button?: HTMLButtonElement;
   protected _category?: HTMLElement;
 
-  constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
+  constructor(container: HTMLElement, actions?: ICardActions, protected blockName?: string) {
     super(container);
 
-    this._title = ensureElement<HTMLElement>(`${blockName}__title`, container);
-    this._price = ensureElement<HTMLElement>(`${blockName}__price`, container);
-    this._description = container.querySelector(`${blockName}_text`);
-    this._image = container.querySelector(`${blockName}__image`);
-    this._button = container.querySelector(`${blockName}__button`);
-    this._category = container.querySelector(`${blockName}__category`);
+    this._title = ensureElement<HTMLElement>(`.card__title`, container);
+    this._price = ensureElement<HTMLElement>(`.card__price`, container);
+    this._description = container.querySelector(`.card__text`);
+    this._image = container.querySelector(`.card__image`);
+    this._button = container.querySelector(`.card__button`);
+    this._category = container.querySelector(`.card__category`);
 
     if(actions?.onClick) {
       if(this._button) {
@@ -56,12 +56,12 @@ export class Card extends Component {
     this.setText(this._description, value);
   }
 
-  set price(value: number) {
+  set price(value: string | number) {
     this.setText(this._price, value);
   }
 
   get price() {
-    return Number(this._price.textContent) || 0; //@todo или null возвращать?
+    return this._price.textContent || '' || 0; //@todo или null возвращать?
   }
 
   set category(value: string) {
