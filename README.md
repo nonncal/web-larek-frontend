@@ -300,7 +300,8 @@ formErrors: FormError = {}; // объект с ошибками валидаци
     protected _image?: HTMLElement; // картинка товара 
     protected _description?: HTMLElement; // описание товара 
     protected _button?: HTMLElement; // кнопка на карточке товара 
-    protected _category?: HTMLElement; // категория товара 
+    protected _category?: HTMLElement; // категория товара
+    protected _index?: HTMLElement; // индекс товара в корзине 
     protected _price: HTMLElement; // цена товара 
 ```
 
@@ -315,6 +316,7 @@ formErrors: FormError = {}; // объект с ошибками валидаци
 `set image(value: string)`
 `set category(value: string)`
 `set price(value: number)`
+`set index(value: number)`
 `get price()`
 
 Отвечает за установку всех свойств карточки, далее будет использоваться как родитель для разных видов карточки товара.

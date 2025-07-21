@@ -43,7 +43,7 @@ events.on('items:changed', () => {
     const card = new Card(cloneTemplate(cardCatalogTemplate), {onClick: () => events.emit('card:select', item)});
     return card.render(item);
   });
-})
+});
 
 events.on('card:select', (item: IProductItem) => {
   appData.setPreview(item);
@@ -56,8 +56,9 @@ events.on('preview:changed', (item: IProductItem) => { // @todo onClick
 })
 
 events.on('basket:open', () => {
-  basket.items = appData.getBasketProducts().map(item => {
+  basket.items = appData.getBasketProducts().map((item, index) => {
     const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {appData.deleteFromBasket(item)}});
+    card.index = index + 1;
     return card.render(item);
   });
   basket.total = appData.getTotal();
@@ -67,11 +68,11 @@ events.on('basket:open', () => {
 });
 
 events.on('basket:changed', () => {
-  basket.items = appData.getBasketProducts().map(item => {
+  basket.items = appData.getBasketProducts().map((item,index) => {
     const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {
-      
       appData.deleteFromBasket(item)
     }})
+    card.index = index + 1; 
     return card.render(item);
   });
   page.counter = appData.getBasketProducts().length;
