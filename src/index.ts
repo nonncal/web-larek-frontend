@@ -17,8 +17,8 @@ import { IOrderForm } from './types/components/Order';
 const events = new EventEmitter();
 const api = new MarketApi(CDN_URL, API_URL);
 
-events.onAll(({eventName, data}) => {
-  console.log(eventName, data);
+events.onAll(({ eventName, data }) => {
+    console.log(eventName, data);
 })
 
 const successTemplate = ensureElement<HTMLTemplateElement>('#success');
@@ -50,8 +50,21 @@ events.on('card:select', (item: IProductItem) => {
 });
 
 events.on('preview:changed', (item: IProductItem) => { 
-  const card = new Card(cloneTemplate(cardPreviewTemplate), {onClick: () => {appData.addToBasket(item), card.available = appData.getAvailableProducts().some(product => product.id === item.id)}});
+  const card = new Card(cloneTemplate(cardPreviewTemplate), {onClick: () => {
+    if(appData.getBasketProducts().some(product => product.id === item.id)){
+      appData.deleteFromBasket(item);
+    } else {
+      appData.addToBasket(item);
+    }
+    card.available = appData.getAvailableProducts().some(product => product.id === item.id);
+    if(appData.getBasketProducts().some(product => product.id === item.id)){
+      card.buttonText = 'Удалить из корзины';
+    }
+  }});
   card.available = appData.getAvailableProducts().some(product => product.id === item.id);
+  if(appData.getBasketProducts().some(product => product.id === item.id)){
+      card.buttonText = 'Удалить из корзины';
+  }
   modal.render({content: card.render(item)});
 })
 

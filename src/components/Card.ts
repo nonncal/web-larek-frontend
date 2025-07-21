@@ -69,12 +69,18 @@ export class Card extends Component {
     }
   }
 
+  set buttonText(value: string) {
+    if(this._button) {
+      this._button.textContent = value;
+    }
+  }
+
   set index(value: number) {
     this.setText(this._index, String(value));
   }
 
   get price() {
-    return this._price.textContent || '' || 0; //@todo или null возвращать?
+    return this._price.textContent;
   }
 
   set category(value: string) {

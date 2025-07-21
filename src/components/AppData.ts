@@ -26,7 +26,7 @@ export class AppData implements IAppState {
   }
 
   getAvailableProducts(): IProductItem[] {
-    return this.catalog.filter(item => (!this.basket.find(({id}) => id === item.id)) && item.price !== null);
+    return this.catalog.filter(item => item.price !== null);
   }
 
   setPreview(item: IProductItem) {
