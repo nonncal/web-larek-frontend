@@ -7,6 +7,7 @@ export interface IOrderForm {
 
 export interface IOrder extends IOrderForm {
   items: string[];
+  total: number;
 }
 
 export interface IOrderResult {

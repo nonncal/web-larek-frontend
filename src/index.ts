@@ -49,7 +49,7 @@ events.on('card:select', (item: IProductItem) => {
   appData.setPreview(item);
 });
 
-events.on('preview:changed', (item: IProductItem) => { // @todo onClick
+events.on('preview:changed', (item: IProductItem) => { 
   const card = new Card(cloneTemplate(cardPreviewTemplate), {onClick: () => {appData.addToBasket(item), card.available = appData.getAvailableProducts().some(product => product.id === item.id)}});
   card.available = appData.getAvailableProducts().some(product => product.id === item.id);
   modal.render({content: card.render(item)});
@@ -79,23 +79,24 @@ events.on('basket:changed', () => {
   basket.total = appData.getTotal();
 });
 
-// events.on('order:submit', () => {
-//   api.orderProducts(appData.order)
-//   .then((res) => {
-//     const success = new Success(cloneTemplate(successTemplate), {
-//       onClick: () => {
-//         modal.close();
-//         appData.clearBasket();
-//       }
-//     })
-//     modal.render({
-//         content: success.render()
-//     })
-//   })
-//   .catch(err => {
-//     console.error(err);
-//   })
-// })
+events.on('order:submit', () => {
+  api.orderProducts(appData.order)
+  .then((res) => {
+    appData.clearBasket();
+    const success = new Success(cloneTemplate(successTemplate), {
+      onClick: () => {
+        modal.close();
+      }
+    })
+    success.total = res.total;
+    modal.render({
+        content: success.render()
+    })
+  })
+  .catch(err => {
+    console.error(err);
+  })
+})
 
 events.on('formErrors:change', (errors: Partial<IOrderForm>) => {
     const { email, phone, payment,  address} = errors;
@@ -110,15 +111,24 @@ events.on(/^order\..*:change/, (data: { field: keyof IOrderForm, value: string }
 });
 
 events.on('order:open', () => {
+  appData.order.total = appData.getTotal();
   modal.render({
         content: paymentOrder.render({
-            phone: '',
-            email: '',
-            valid: false,
-            errors: ''
+          payment: '',
+          address: '',
+          errors: ''
         })
     });
-});
+  });
+  events.on('order:next', () => {
+    modal.render({
+        content: contactsOrder.render({
+          email: '',
+          phone: '',
+          errors: ''
+        })
+    })
+  });
 
 events.on('modal:open', () => {
   page.locked = true;

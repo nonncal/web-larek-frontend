@@ -3,13 +3,13 @@ import { Component } from "../base/Component";
 import { IEvents } from "../base/events";
 
 export class Form<T> extends Component {
-  protected _button: HTMLButtonElement; 
+  protected _submit: HTMLButtonElement; 
   protected _errors: HTMLElement; 
 
   constructor(protected container: HTMLFormElement,protected events: IEvents) {
     super(container);
 
-    this._button = ensureElement<HTMLButtonElement>('.modal__actions',container);
+    this._submit = ensureElement<HTMLButtonElement>('button[type=submit]', this.container);
     this._errors = ensureElement<HTMLElement>('.form__errors',container);
     
     this.container.addEventListener('input', (e) => {
@@ -26,11 +26,11 @@ export class Form<T> extends Component {
   }
 
   protected onInputChange(field: keyof T, value: string) {
-    this.events.emit(`${this.container.name}.${String(field)}:change`, {field, value});
+    this.events.emit(`order.${String(field)}:change`, {field, value});
   }
 
   set valid(value: boolean) {
-    this._button.disabled = !value;
+    this._submit.disabled = !value;
   }
 
   set errors(error: string) {

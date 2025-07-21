@@ -125,6 +125,7 @@ interface IOrderForm {
 // интерфейс всего заказа
 interface IOrder extends IOrderForm {
   items: string[]; // список товаров, будем сохранять только id
+  total: number; // итоговая сумма заказа
 }
 
 // интерфейс ответа сервера на заказ
@@ -237,6 +238,7 @@ formErrors: FormError = {}; // объект с ошибками валидаци
 Имеет поля:
 ```
     protected _button: HTMLButtonElement; // кнопка действия
+    protected _total: HTMLElement; // итоговая сумма покупки
 ```
 
 В конструкторе принимает контейнер и функцию с действиями по клику.

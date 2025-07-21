@@ -11,7 +11,8 @@ export class AppData implements IAppState {
   phone: '',
   address: '',
   email: '',
-  items: []
+  items: [],
+  total: 0
 }; 
   catalog: IProductItem[]; 
   preview: string | null; 
@@ -23,8 +24,6 @@ export class AppData implements IAppState {
     this.catalog = items;
     this.events.emit('items:changed', {catalog: this.catalog});
   }
-
-  // @todo нужен ли getCatalog?
 
   getAvailableProducts(): IProductItem[] {
     return this.catalog.filter(item => (!this.basket.find(({id}) => id === item.id)) && item.price !== null);
@@ -86,7 +85,7 @@ export class AppData implements IAppState {
     }
 
     if (!this.order.payment) {
-      errors.phone = 'Необходимо указать способ оплаты';
+      errors.payment = 'Необходимо указать способ оплаты';
     } 
 
     this.formErrors = errors;
