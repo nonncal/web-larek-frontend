@@ -24,12 +24,14 @@ export class Basket extends Component {
   set items(items: HTMLElement[]) {
     if(items.length) {
       this._list.replaceChildren(...items);
+      this._button.disabled = false;
     } else {
       this._list.replaceChildren(createElement<HTMLParagraphElement>('p', {textContent: 'Корзина пуста'}));
+      this._button.disabled = true;
     }
   }
   
   set total(value: number) {
-    this.setText(this._total, String(value));
+    this.setText(this._total, `${String(value)} синапсов`);
   }
 }

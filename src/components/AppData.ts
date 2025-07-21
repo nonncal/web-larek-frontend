@@ -19,11 +19,6 @@ export class AppData implements IAppState {
 
   constructor(data: Partial<IAppState>, protected events: IEvents) {}
 
-  filterOrderdProducts(id: string) {
-    this.basket = Array.from(new Set([...this.basket]));
-    this.order.items = this.basket.map(item => item.id);
-  }
-
   setCatalog(items: IProductItem[]) {
     this.catalog = items;
     this.events.emit('items:changed', {catalog: this.catalog});
@@ -31,8 +26,8 @@ export class AppData implements IAppState {
 
   // @todo нужен ли getCatalog?
 
-  getCatalog() {
-    return this.catalog;
+  getAvailableProducts(): IProductItem[] {
+    return this.catalog.filter(item => (!this.basket.find(({id}) => id === item.id)) && item.price !== null);
   }
 
   setPreview(item: IProductItem) {
@@ -65,6 +60,7 @@ export class AppData implements IAppState {
   getBasketProducts() {
     return this.basket;
   }
+
 
   setOrderField(field: keyof IOrderForm, value: string) {
     this.order[field] = value;

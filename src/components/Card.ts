@@ -57,7 +57,14 @@ export class Card extends Component {
   }
 
   set price(value: string | number) {
-    this.setText(this._price, value);
+    this._price.textContent = value === null ? 'Бесценно' : `${value} синапсов`;
+  }
+
+  set available(value: boolean) {
+    if(this._button) {
+      this._button.disabled = !value;
+      this._button.textContent = value ? 'Купить' : 'Недоступно';
+    }
   }
 
   get price() {

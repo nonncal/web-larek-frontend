@@ -6,7 +6,7 @@ import { EventEmitter } from './components/base/events';
 import { Page } from './components/Page';
 import { MarketApi } from './components/MarketApi';
 import { API_URL, CDN_URL } from './utils/constants';
-import { cloneTemplate, ensureElement, createElement } from './utils/utils';
+import { cloneTemplate, ensureElement } from './utils/utils';
 import { Modal } from './components/common/Modal';
 import { ContactsOrder, PaymentOrder } from './components/Order';
 import { Card } from './components/Card';
@@ -38,22 +38,11 @@ const contactsOrder = new ContactsOrder(cloneTemplate(contactsTemplate), events)
 
 const basket = new Basket(cloneTemplate(basketTemplate), events);
 
-appData.addToBasket({
-  title: 'Архитекторы общества',
-  price: 233,
-  category: 'другое', // категория продукта 
-  image: 'dsdsdsd', // ссылка на изображение 
-  id: '1113', // идентификатор продукта
-  description: 'ewfewfefw' 
-});
-
 events.on('items:changed', () => {
   page.catalog = appData.catalog.map((item) => {
     const card = new Card(cloneTemplate(cardCatalogTemplate), {onClick: () => events.emit('card:select', item)});
     return card.render(item);
   });
-
-  page.counter = appData.getBasketProducts().length;
 })
 
 events.on('card:select', (item: IProductItem) => {
@@ -61,13 +50,14 @@ events.on('card:select', (item: IProductItem) => {
 });
 
 events.on('preview:changed', (item: IProductItem) => { // @todo onClick
-  const card = new Card(cloneTemplate(cardPreviewTemplate));
+  const card = new Card(cloneTemplate(cardPreviewTemplate), {onClick: () => {appData.addToBasket(item), card.available = appData.getAvailableProducts().some(product => product.id === item.id)}});
+  card.available = appData.getAvailableProducts().some(product => product.id === item.id);
   modal.render({content: card.render(item)});
 })
 
 events.on('basket:open', () => {
   basket.items = appData.getBasketProducts().map(item => {
-    const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {appData.deleteFromBasket(item),  page.counter = appData.getBasketProducts().length}});
+    const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {appData.deleteFromBasket(item)}});
     return card.render(item);
   });
   basket.total = appData.getTotal();
@@ -78,11 +68,15 @@ events.on('basket:open', () => {
 
 events.on('basket:changed', () => {
   basket.items = appData.getBasketProducts().map(item => {
-    const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {appData.deleteFromBasket(item),  page.counter = appData.getBasketProducts().length}});
+    const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {
+      
+      appData.deleteFromBasket(item)
+    }})
     return card.render(item);
   });
+  page.counter = appData.getBasketProducts().length;
   basket.total = appData.getTotal();
-})
+});
 
 // events.on('order:submit', () => {
 //   api.orderProducts(appData.order)
@@ -114,16 +108,16 @@ events.on(/^order\..*:change/, (data: { field: keyof IOrderForm, value: string }
     appData.setOrderField(data.field, data.value);
 });
 
-// events.on('order:open', () => {
-//   modal.render({
-//         content: paymentOrder.render({
-//             phone: '',
-//             email: '',
-//             valid: false,
-//             errors: ''
-//         })
-//     });
-// });
+events.on('order:open', () => {
+  modal.render({
+        content: paymentOrder.render({
+            phone: '',
+            email: '',
+            valid: false,
+            errors: ''
+        })
+    });
+});
 
 events.on('modal:open', () => {
   page.locked = true;
