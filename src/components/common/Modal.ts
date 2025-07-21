@@ -30,9 +30,9 @@ export class Modal extends Component {
     this._content.replaceChildren();
     this.events.emit('modal:close');
   }
-    render(data: {content: HTMLElement}): HTMLElement {
-      super.render(data);
-      this.open();
-      return this.container;
-    }
+  render(data: {content: HTMLElement}): HTMLElement {
+    super.render(data);
+    this.open();
+    return this.container;
+  }
 }

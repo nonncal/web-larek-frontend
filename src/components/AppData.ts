@@ -60,7 +60,6 @@ export class AppData implements IAppState {
     return this.basket;
   }
 
-
   setOrderField(field: keyof IOrderForm, value: string) {
     this.order[field] = value;
 
