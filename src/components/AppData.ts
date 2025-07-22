@@ -1,7 +1,7 @@
 import { IAppState, IProductItem } from "../types/components/AppData";
 import { FormError } from "../types/components/common/Form";
 import { IOrder, IOrderForm } from "../types/components/Order";
-import { EventEmitter, IEvents } from "./base/events";
+import { IEvents } from "./base/events";
 
 
 export class AppData implements IAppState {
@@ -62,6 +62,10 @@ export class AppData implements IAppState {
 
   setOrderField(field: keyof IOrderForm, value: string) {
     this.order[field] = value;
+    
+    if(field === 'payment') {
+      
+    }
 
     if(this.validateOrder()) {
       this.events.emit('order:ready', this.order);

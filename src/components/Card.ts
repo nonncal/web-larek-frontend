@@ -1,5 +1,6 @@
 import { ensureElement } from "../utils/utils";
 import { Component } from "./base/Component";
+import { Category } from "../types/components/AppData";
 
 interface ICardActions {
   onClick: (event: MouseEvent) => void;
@@ -83,7 +84,26 @@ export class Card extends Component {
     return this._price.textContent;
   }
 
-  set category(value: string) {
+  set category(value: Category) {
+    if(this._category) {
+    switch(value) {
+      case 'другое':
+        this._category.classList.add('card__category_other');
+        break;
+      case 'дополнительное':
+        this._category.classList.add('card__category_additional');
+        break;
+      case 'кнопка':
+        this._category.classList.add('card__category_button');
+        break;
+      case 'софт-скил':
+        this._category.classList.add('card__category_soft');
+        break;
+      case 'хард-скил':
+        this._category.classList.add('card__category_hard');
+        break;
+    }
+  }
     this.setText(this._category, value);
   }
 }

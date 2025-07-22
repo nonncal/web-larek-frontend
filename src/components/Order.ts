@@ -13,7 +13,6 @@ export class PaymentOrder extends Form<IOrderForm> {
       const target = e.target as HTMLButtonElement;
       const value = target.name as 'cash' | 'card';
       const field = 'payment' as keyof IOrderForm;
-      this.payment = value;
       this.onInputChange(field, value);
     })
 
@@ -23,19 +22,13 @@ export class PaymentOrder extends Form<IOrderForm> {
     })
   }
 
-  set payment(value: 'cash' | 'card') {
-    if (value) {
-      if(value === 'cash') {
-        (this.container.elements.namedItem('cash') as HTMLButtonElement).dataset.name = value;
-        (this.container.elements.namedItem('card') as HTMLButtonElement).classList.remove('button_alt-active');
-        (this.container.elements.namedItem('cash') as HTMLButtonElement).classList.add('button_alt-active');
-      } else {
-        (this.container.elements.namedItem('card') as HTMLButtonElement).dataset.name = value;
-        (this.container.elements.namedItem('cash') as HTMLButtonElement).classList.remove('button_alt-active');
-        (this.container.elements.namedItem('card') as HTMLButtonElement).classList.add('button_alt-active');
-      }
-      }
-  }
+set payment(value: 'cash' | 'card') {
+  const cashBtn = this.container.elements.namedItem('cash') as HTMLButtonElement;
+  const cardBtn = this.container.elements.namedItem('card') as HTMLButtonElement;
+  cashBtn.classList.toggle('button_alt-active', value === 'cash');
+  cardBtn.classList.toggle('button_alt-active', value === 'card');
+}
+
   set address(value: string) {
     (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
   }

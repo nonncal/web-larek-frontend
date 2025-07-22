@@ -113,18 +113,37 @@ events.on('order:submit', () => {
 
 events.on('formErrors:change', (errors: Partial<IOrderForm>) => {
     const { email, phone, payment,  address} = errors;
-    paymentOrder.valid = !payment && !address;
-    paymentOrder.errors = Object.values({payment, address}).filter(i => !!i).join('; ');
-    contactsOrder.valid = !email && !phone;
-    contactsOrder.errors = Object.values({email, phone}).filter(i => !!i).join('; ');
+    const { order } = appData;
+
+    paymentOrder.render({
+      payment: order.payment as 'cash' | 'card',
+      address: order.address,
+      valid: !payment && !address,
+      errors: Object.values({ payment, address }).filter(Boolean).join('; ')
+    });
+
+    contactsOrder.render({
+      email: order.email,
+      phone: order.phone,
+      valid: !email && !phone,
+      errors: Object.values({ email, phone }).filter(Boolean).join('; ')
+    });
 });
+
 
 events.on(/^order\..*:change/, (data: { field: keyof IOrderForm, value: string }) => {
     appData.setOrderField(data.field, data.value);
 });
 
 events.on('order:open', () => {
-  appData.order.total = appData.getTotal();
+    appData.order = {
+ payment: '',
+  phone: '',
+  address: '',
+  email: '',
+  items: appData.getBasketProducts().map(item => item.id),
+  total: appData.getTotal(),
+  };
   modal.render({
         content: paymentOrder.render({
           payment: '',
