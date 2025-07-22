@@ -157,6 +157,7 @@ order: IOrder; // даные заказа
 catalog: IProductItem[]; // список товаров на главной странице
 preview: string | null; // модальное окно по id карточки
 formErrors: FormError = {}; // объект с ошибками валидации
+currentPreviewItem: IProductItem; // хранит текущую карточку, которая отображается в превью
 ```
 
 Конструктор принимает частично `data: IAppState` и объект событий `events: IEvents`.
