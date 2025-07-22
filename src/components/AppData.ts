@@ -15,6 +15,7 @@ export class AppData implements IAppState {
   catalog: IProductItem[]; 
   preview: string | null; 
   formErrors: FormError = {}; 
+  currentPreviewItem: IProductItem;
 
   constructor(data: Partial<IAppState>, protected events: IEvents) {}
 

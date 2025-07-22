@@ -19,7 +19,7 @@ const api = new MarketApi(CDN_URL, API_URL);
 
 events.onAll(({ eventName, data }) => {
     console.log(eventName, data);
-})
+});
 
 const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 const cardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog');
@@ -42,7 +42,37 @@ const success = new Success(cloneTemplate(successTemplate), {
       onClick: () => {
         modal.close();
       }
-    })
+    });
+
+const updateCardButtons = (item: IProductItem) => {
+    previewCard.available = appData.getAvailableProducts().some(product => product.id === item.id);
+    if(appData.getBasketProducts().some(product => product.id === item.id)){
+      previewCard.buttonText = 'Удалить из корзины';
+    }
+    previewCard.available = appData.getAvailableProducts().some(product => product.id === item.id);
+    if(appData.getBasketProducts().some(product => product.id === item.id)){
+      previewCard.buttonText = 'Удалить из корзины';
+    }
+};
+
+const previewCard = new Card(cloneTemplate(cardPreviewTemplate), {
+  onClick: () => {
+    const item = appData.currentPreviewItem;
+    if(appData.getBasketProducts().some(product => product.id === item.id)){
+      appData.deleteFromBasket(item);
+    } else {
+      appData.addToBasket(item);
+    }
+    updateCardButtons(item);
+    modal.render({content: previewCard.render(item)});
+  }
+});
+
+events.on('preview:changed', (item: IProductItem) => {
+  appData.currentPreviewItem = item;
+  updateCardButtons(item); 
+  modal.render({content: previewCard.render(item)});
+});
 
 events.on('items:changed', () => {
   page.catalog = appData.catalog.map((item) => {
@@ -54,25 +84,6 @@ events.on('items:changed', () => {
 events.on('card:select', (item: IProductItem) => {
   appData.setPreview(item);
 });
-
-events.on('preview:changed', (item: IProductItem) => { 
-  const card = new Card(cloneTemplate(cardPreviewTemplate), {onClick: () => {
-    if(appData.getBasketProducts().some(product => product.id === item.id)){
-      appData.deleteFromBasket(item);
-    } else {
-      appData.addToBasket(item);
-    }
-    card.available = appData.getAvailableProducts().some(product => product.id === item.id);
-    if(appData.getBasketProducts().some(product => product.id === item.id)){
-      card.buttonText = 'Удалить из корзины';
-    }
-  }});
-  card.available = appData.getAvailableProducts().some(product => product.id === item.id);
-  if(appData.getBasketProducts().some(product => product.id === item.id)){
-      card.buttonText = 'Удалить из корзины';
-  }
-  modal.render({content: card.render(item)});
-})
 
 events.on('basket:open', () => {
   basket.total = appData.getTotal();
@@ -105,7 +116,7 @@ events.on('order:submit', () => {
   .catch(err => {
     console.error(err);
   })
-})
+});
 
 events.on('formErrors:change', (errors: Partial<IOrderForm>) => {
     const { email, phone, payment,  address} = errors;
