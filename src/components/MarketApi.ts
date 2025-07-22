@@ -1,6 +1,6 @@
 import { IProductItem } from "../types/components/AppData";
 import { IMarketApi } from "../types/components/MarketApi";
-import { IOrder, IOrderResult } from "../types/components/Order";
+import { IOrderForm, IOrderResult } from "../types/components/Order";
 import { Api, ApiListResponse } from "./base/api";
 
 
@@ -21,7 +21,7 @@ export class MarketApi extends Api implements IMarketApi {
     })   
   }
 
-  orderProducts(order: IOrder): Promise<IOrderResult> {
-    return this.post('/order', order).then((res: IOrderResult) => res);
+  orderProducts(order: IOrderForm, total: number, items: string[]): Promise<IOrderResult> {
+    return this.post('/order', Object.assign({ total, items }, order)).then((res: IOrderResult) => res);
   }
 }

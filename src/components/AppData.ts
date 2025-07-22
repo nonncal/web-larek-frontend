@@ -6,13 +6,11 @@ import { IEvents } from "./base/events";
 
 export class AppData implements IAppState {
   basket: IProductItem[] = [];
-  order: IOrder  = {
+  order: IOrderForm  = {
   payment: '',
   phone: '',
   address: '',
   email: '',
-  items: [],
-  total: 0
 }; 
   catalog: IProductItem[]; 
   preview: string | null; 
@@ -36,19 +34,16 @@ export class AppData implements IAppState {
 
   addToBasket(item: IProductItem) {
     this.basket.push(item);
-    this.order.items = this.basket.map(item => item.id);
     this.events.emit('basket:changed', this.basket);
   }
 
   deleteFromBasket(item: IProductItem) {
     this.basket = this.basket.filter(({id}) => id !== item.id);
-    this.order.items = this.basket.map(item => item.id);
     this.events.emit('basket:changed', this.basket);
   }
 
   clearBasket() {
     this.basket = [];
-    this.order.items = [];
     this.events.emit('basket:changed', this.basket);
   }
 

@@ -38,6 +38,12 @@ const contactsOrder = new ContactsOrder(cloneTemplate(contactsTemplate), events)
 
 const basket = new Basket(cloneTemplate(basketTemplate), events);
 
+const success = new Success(cloneTemplate(successTemplate), {
+      onClick: () => {
+        modal.close();
+      }
+    })
+
 events.on('items:changed', () => {
   page.catalog = appData.catalog.map((item) => {
     const card = new Card(cloneTemplate(cardCatalogTemplate), {onClick: () => events.emit('card:select', item)});
@@ -69,11 +75,6 @@ events.on('preview:changed', (item: IProductItem) => {
 })
 
 events.on('basket:open', () => {
-  basket.items = appData.getBasketProducts().map((item, index) => {
-    const card = new Card(cloneTemplate(cardBasketTemplate), {onClick: () => {appData.deleteFromBasket(item)}});
-    card.index = index + 1;
-    return card.render(item);
-  });
   basket.total = appData.getTotal();
   modal.render({
    content:  basket.render()
@@ -93,14 +94,9 @@ events.on('basket:changed', () => {
 });
 
 events.on('order:submit', () => {
-  api.orderProducts(appData.order)
+  api.orderProducts(appData.order, appData.getTotal(), appData.getBasketProducts().map(item => item.id))
   .then((res) => {
     appData.clearBasket();
-    const success = new Success(cloneTemplate(successTemplate), {
-      onClick: () => {
-        modal.close();
-      }
-    })
     success.total = res.total;
     modal.render({
         content: success.render()
@@ -141,8 +137,6 @@ events.on('order:open', () => {
   phone: '',
   address: '',
   email: '',
-  items: appData.getBasketProducts().map(item => item.id),
-  total: appData.getTotal(),
   };
   modal.render({
         content: paymentOrder.render({

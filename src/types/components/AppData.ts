@@ -1,4 +1,4 @@
-import { IOrder } from "./Order";
+import { IOrderForm } from "./Order";
 
 export type Category = 'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил';
 
@@ -13,6 +13,6 @@ export interface IProductItem {
 
 export interface IAppState {
   catalog: IProductItem[];
-  order: IOrder | null;
+  order: IOrderForm;
   preview: string | null;
 }
